@@ -157,7 +157,6 @@ bot.catch((err, ctx) => {
 });
 
 // --- Vercel Deployment Export ---
-// This is the CRITICAL change. It directly exports an async function that Vercel will call.
 module.exports = async (req, res) => {
   try {
     await bot.handleUpdate(req.body);
