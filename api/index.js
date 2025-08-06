@@ -1,25 +1,18 @@
 // api/index.js
 
-// Import the Telegraf library. 'dotenv' is not strictly needed here for Vercel,
-// as environment variables are set directly in Vercel's dashboard, but it's good practice
-// for local development if you were to run this file directly.
 const { Telegraf } = require('telegraf');
 
-// Initialize the bot with the BOT_TOKEN. Vercel will inject this from your environment variables.
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 // --- Global Middleware ---
-// This middleware ensures that all bot replies use MarkdownV2 for professional formatting
-// and disables web page previews for a cleaner look, especially for links.
+// This middleware ensures all replies use MarkdownV2 for formatting.
 bot.use(async (ctx, next) => {
   ctx.replyWithMarkdown = (text, extra) => ctx.reply(text, { parse_mode: 'MarkdownV2', disable_web_page_preview: true, ...extra });
   await next();
 });
 
 // --- Bot Commands ---
-
-// The /start command: Your bot's initial greeting and a concise overview for the bank.
-// It sets the tone and introduces the core value proposition.
+// The /start command: Your bot's initial greeting and project overview for the bank.
 bot.start(async (ctx) => {
   const welcomeMessage = `
 *Welcome to myTeleScopeBot – Your Premier Partner in Digital Advertising Contracts.*
@@ -33,8 +26,7 @@ To understand the full scope of our services and operational integrity, please e
   await ctx.replyWithMarkdown(`To navigate our features, use the /help command.`);
 });
 
-// The /help command: Provides a detailed, contract-focused list of the bot's simulated features.
-// Each command is explained in a way that highlights professionalism and business processes.
+// The /help command: Provides a detailed, contract-focused list of the bot's features.
 bot.help(async (ctx) => {
   const helpMessage = `
 *myTeleScopeBot: Contract-Oriented Features Overview*
@@ -55,8 +47,7 @@ Our commitment is to provide a reliable, auditable, and high-performance adverti
   await ctx.replyWithMarkdown(helpMessage);
 });
 
-// /website command: Directly links to your deployed landing page.
-// This is crucial for connecting the bot to the external professional website.
+// /website command: Links directly to your deployed landing page.
 bot.hears('/website', async (ctx) => {
   const landingPageUrl = 'https://telescope-landing-page.vercel.app/';
   const message = `
@@ -176,24 +167,19 @@ Type /help to see a list of available commands.
 });
 
 // --- Error Handling ---
-// A basic error handler to catch any unexpected issues and provide a polite message.
 bot.catch((err, ctx) => {
   console.error(`Error for ${ctx.updateType}:`, err);
   ctx.reply('An unexpected error occurred. Our team has been notified. Please try again later.');
 });
 
 // --- Vercel Deployment Export ---
-// This is the critical part for Vercel. It exports a function that Vercel will call
-// when your bot receives an update from Telegram. It correctly uses Telegraf's
-// webhookCallback to process the incoming request.
-module.exports = async (request, response) => {
-  // Telegraf's webhookCallback expects a POST request.
-  if (request.method === 'POST') {
-    // Process the incoming Telegram update.
-    return bot.webhookCallback('/')(request, response);
+// This is the CRITICAL change. It directly exports an async function that Vercel will call.
+module.exports = async (req, res) => {
+  try {
+    await bot.handleUpdate(req.body);
+  } catch (err) {
+    console.error(err);
   }
-  // For any other request method (e.g., GET), simply return a 200 OK.
-  // This is common for health checks or initial browser visits to the Vercel URL.
-  response.statusCode = 200;
-  response.end();
+  res.statusCode = 200;
+  res.end();
 };
