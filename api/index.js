@@ -12,39 +12,23 @@ bot.use(async (ctx, next) => {
 });
 
 // --- Bot Commands ---
-// The /start command: Your bot's initial greeting and project overview for the bank.
+// The /start command: Your bot's new professional and direct greeting.
 bot.start(async (ctx) => {
   const welcomeMessage = `
-*Welcome to myTeleScopeBot – Your Premier Partner in Digital Advertising Contracts\\.*
+*Welcome to myTeleScopeBot – Your Premier Advertising Partner\\.*
 
-We specialize in connecting advertisers with highly engaged Telegram communities through a transparent and secure contractual framework\\. Our platform leverages advanced AI for precision targeting and ensures compliance with all regulatory standards\\.
+We function as a web portal where you can manage your advertising campaigns and revenue streams\\. Our platform leverages advanced anti\-ban technologies and smart moderation to ensure seamless operation\\.
 
-To understand the full scope of our services and operational integrity, please explore the commands below\\.
+You can purchase ads or receive revenue from advertising agreements through a formal contract with us\\.
+
+For support or to begin a contractual discussion, please use the following contacts:
+•   Email: leonardorevan186@gmail\\.com
+•   Phone: \+37493039091
+•   Telegram Support: @LeonardoRevan
+
+We are committed to providing a secure and compliant advertising solution\\.
   `;
   await ctx.replyWithMarkdown(welcomeMessage);
-  await ctx.replyWithMarkdown(`For a comprehensive overview of our services and business model, please visit our official landing page: /website`);
-  await ctx.replyWithMarkdown(`To navigate our features, use the /help command\\.`);
-});
-
-// The /help command: Provides a detailed, contract-focused list of the bot's features.
-bot.help(async (ctx) => {
-  const helpMessage = `
-*myTeleScopeBot: Contract-Oriented Features Overview*
-
-Our bot serves as the primary interface for managing your advertising agreements and ensuring campaign success\\.
-
-*Key Commands:*
-•   /website \- Access our official corporate landing page for detailed business information and case studies\\.
-•   /campaign\_overview \- Understand our structured campaign types and the contractual terms associated with each\\.
-•   /ad\_creation \- Learn about our ad content creation process, emphasizing compliance and contractual adherence\\.
-•   /payment\_flow \- Review our secure payment processing protocols and auditable transaction records\\.
-•   /payout\_schedule \- Examine the transparent payout mechanisms for our community partners, based on agreed-upon contracts\\.
-•   /compliance \- Discover our robust anti\-ban and content moderation policies, ensuring legal and ethical advertising\\.
-•   /contact\_sales \- Connect directly with our sales team for partnership inquiries and detailed contract discussions\\.
-
-Our commitment is to provide a reliable, auditable, and high\-performance advertising solution\\.
-  `;
-  await ctx.replyWithMarkdown(helpMessage);
 });
 
 // /website command: Links directly to your deployed landing page.
@@ -148,8 +132,9 @@ bot.hears('/contact_sales', async (ctx) => {
 
 For detailed discussions on advertising contracts, partnership opportunities, or any specific inquiries, please reach out to our dedicated team:
 
-•   *Email:* contact@telescope-ads\\.com
-•   *Telegram Support:* @telescope\_support (for general inquiries)
+•   *Email:* leonardorevan186@gmail\\.com
+•   *Phone:* \+37493039091
+•   *Telegram Support:* @LeonardoRevan
 
 We look forward to discussing how TeleScope can meet your strategic objectives\\.
   `;
@@ -161,7 +146,6 @@ bot.on('text', async (ctx) => {
   const unknownCommandMessage = `
 I apologize, I didn't understand that command\\.
 Please use one of the predefined commands to navigate our services\\.
-Type /help to see a list of available commands\\.
   `;
   await ctx.replyWithMarkdown(unknownCommandMessage);
 });
